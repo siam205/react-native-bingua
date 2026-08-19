@@ -26,6 +26,11 @@
   --color-surface: #f6f7fb;
   --color-background: #ffffff;
 
+  /* Speech bubble tints — onboarding */
+  --color-bubble-blue: #eaf2fd;
+  --color-bubble-purple: #f3f1fe;
+  --color-bubble-peach: #fdede6;
+
   /* Font family — Poppins, one static weight per file */
   --font-poppins-regular: "Poppins-Regular";
   --font-poppins-medium: "Poppins-Medium";
