@@ -10,7 +10,7 @@ import {
 
 import { Image } from "@/components/Image";
 import { images } from "@/constants/images";
-import { colors, fontFamily } from "@/theme";
+import { colors } from "@/theme";
 
 type AuthTextFieldProps = {
   label: string;
@@ -52,7 +52,7 @@ export function AuthTextField({
           autoCapitalize={autoCapitalize}
           autoCorrect={false}
           secureTextEntry={hidden}
-          style={styles.input}
+          className="mt-1 h-[26px] flex-1 p-0 font-poppins-medium text-[16px] text-ink"
         />
 
         {secure ? (
@@ -75,7 +75,8 @@ export function AuthTextField({
   );
 }
 
-// StyleSheet only for the TextInput style prop and the platform shadow.
+// StyleSheet only for the platform shadow, which has no Tailwind equivalent
+// that preserves shadowColor and the Android elevation (see AGENTS.md).
 const styles = StyleSheet.create({
   card: {
     shadowColor: "#000000",
@@ -83,14 +84,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.04,
     shadowRadius: 6,
     elevation: 1,
-  },
-  input: {
-    flex: 1,
-    height: 26,
-    marginTop: 4,
-    padding: 0,
-    fontFamily: fontFamily.medium,
-    fontSize: 16,
-    color: colors.ink,
   },
 });

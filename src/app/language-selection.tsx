@@ -17,7 +17,7 @@ import { PrimaryButton } from "@/components/PrimaryButton";
 import { images } from "@/constants/images";
 import { DEFAULT_LANGUAGE_ID, languages } from "@/data/languages";
 import { useLanguageStore } from "@/store/language-store";
-import { colors, fontFamily } from "@/theme";
+import { colors } from "@/theme";
 import type { LanguageCode } from "@/types/learning";
 
 /**
@@ -80,10 +80,7 @@ export default function LanguageSelection() {
           className="absolute left-3 h-10 w-10 items-center justify-center"
           onPress={leaveScreen}
         >
-          <View
-            className="h-3 w-3 border-b-2 border-l-2 border-ink"
-            style={styles.chevronLeft}
-          />
+          <View className="h-3 w-3 rotate-45 border-b-2 border-l-2 border-ink" />
         </TouchableOpacity>
 
         <Text className="font-poppins-bold text-[19px] text-ink">Choose a language</Text>
@@ -103,13 +100,13 @@ export default function LanguageSelection() {
           autoCapitalize="none"
           autoCorrect={false}
           returnKeyType="search"
-          style={styles.searchInput}
+          className="flex-1 p-0 font-poppins-regular text-[16px] text-ink"
         />
       </View>
 
       <ScrollView
-        style={styles.list}
-        contentContainerStyle={styles.listContent}
+        className="flex-1"
+        contentContainerClassName="pb-4"
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >
@@ -156,29 +153,11 @@ export default function LanguageSelection() {
   );
 }
 
-// StyleSheet only for SafeAreaView, the ScrollView content container, the
-// TextInput and the chevron transform (see the style exceptions in AGENTS.md).
+// StyleSheet only for SafeAreaView, which react-native-safe-area-context does
+// not route through className (see AGENTS.md).
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: colors.background,
-  },
-  // Without flex:1 the ScrollView sizes to its content and pushes the confirm
-  // button and the earth illustration off the bottom of the screen.
-  list: {
-    flex: 1,
-  },
-  listContent: {
-    paddingBottom: 16,
-  },
-  searchInput: {
-    flex: 1,
-    padding: 0,
-    fontFamily: fontFamily.regular,
-    fontSize: 16,
-    color: colors.ink,
-  },
-  chevronLeft: {
-    transform: [{ rotate: "45deg" }],
   },
 });

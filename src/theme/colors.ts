@@ -18,6 +18,9 @@ export const colors = {
 
   // Tinted surfaces
   purpleTint: "#F6F4FF",
+  peachTint: "#FDF3EC",
+  peachTrack: "#F7E0CA",
+  mintTint: "#F1F7E8",
 
   // Neutrals
   ink: "#0D132B",

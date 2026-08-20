@@ -47,23 +47,17 @@ export function LanguageCard({ language, selected, onPress }: LanguageCardProps)
 
       {selected ? (
         <View className="h-[30px] w-[30px] items-center justify-center rounded-full bg-deep-purple">
-          <View
-            className="h-[6px] w-[11px] border-b-2 border-l-2 border-white"
-            style={styles.check}
-          />
+          <View className="mt-[-3px] h-[6px] w-[11px] -rotate-45 border-b-2 border-l-2 border-white" />
         </View>
       ) : (
-        <View
-          className="mr-1 h-2.5 w-2.5 border-r-2 border-t-2 border-ink-muted"
-          style={styles.chevronRight}
-        />
+        <View className="mr-1 h-2.5 w-2.5 rotate-45 border-r-2 border-t-2 border-ink-muted" />
       )}
     </TouchableOpacity>
   );
 }
 
-// StyleSheet only for the platform shadow and the transform arrays that draw
-// the check and chevron (see the style exceptions in AGENTS.md).
+// StyleSheet only for the platform shadow, which has no Tailwind equivalent
+// that preserves shadowColor and the Android elevation (see AGENTS.md).
 const styles = StyleSheet.create({
   cardShadow: {
     shadowColor: "#000000",
@@ -71,12 +65,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 8,
     elevation: 2,
-  },
-  check: {
-    marginTop: -3,
-    transform: [{ rotate: "-45deg" }],
-  },
-  chevronRight: {
-    transform: [{ rotate: "45deg" }],
   },
 });
