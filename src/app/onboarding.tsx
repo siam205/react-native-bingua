@@ -1,12 +1,15 @@
-import { Image } from "expo-image";
-import { Stack } from "expo-router";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Stack, useRouter } from "expo-router";
+import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { Image } from "@/components/Image";
+import { PrimaryButton } from "@/components/PrimaryButton";
 import { images } from "@/constants/images";
 import { colors } from "@/theme";
 
 export default function Onboarding() {
+  const router = useRouter();
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <Stack.Screen options={{ headerShown: false }} />
@@ -57,22 +60,19 @@ export default function Onboarding() {
         </View>
 
         <View className="px-8 pb-6">
-          <TouchableOpacity
-            activeOpacity={0.85}
-            className="relative h-[58px] flex-row items-center justify-center rounded-full bg-deep-purple"
-            style={styles.buttonShadow}
-          >
-            <Text className="font-poppins-bold text-[17px] text-white">Get Started</Text>
-            <View className="absolute right-6 h-[9px] w-[9px] border-r-2 border-t-2 border-white" style={styles.chevron} />
-          </TouchableOpacity>
+          <PrimaryButton
+            label="Get Started"
+            trailingChevron
+            onPress={() => router.push("/sign-up")}
+          />
         </View>
       </View>
     </SafeAreaView>
   );
 }
 
-// StyleSheet is used only for the cases AGENTS.md calls out: SafeAreaView,
-// platform-specific shadow syntax, and transform arrays.
+// StyleSheet is used only for the cases AGENTS.md calls out: SafeAreaView
+// and platform-specific shadow syntax.
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
@@ -84,15 +84,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.08,
     shadowRadius: 8,
     elevation: 3,
-  },
-  buttonShadow: {
-    shadowColor: colors.deepPurple,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.35,
-    shadowRadius: 12,
-    elevation: 6,
-  },
-  chevron: {
-    transform: [{ rotate: "45deg" }],
   },
 });
