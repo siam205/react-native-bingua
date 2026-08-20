@@ -2,6 +2,8 @@ import aiTeacherTab from "@/assets/images/tabIcons/ai-teacher.svg";
 import aiTeacherTabActive from "@/assets/images/tabIcons/ai-teacher-active.svg";
 import appleIcon from "@/assets/images/social/apple.svg";
 import bellIcon from "@/assets/images/icons/bell.svg";
+import bookmarkIcon from "@/assets/images/icons/bookmark.svg";
+import bookmarkFilledIcon from "@/assets/images/icons/bookmark-filled.svg";
 import chatTab from "@/assets/images/tabIcons/chat.svg";
 import chatTabActive from "@/assets/images/tabIcons/chat-active.svg";
 import earth from "@/assets/images/earth.png";
@@ -47,6 +49,8 @@ export const images = {
   eyeOffIcon,
   searchIcon,
   bellIcon,
+  bookmarkIcon,
+  bookmarkFilledIcon,
   headphonesIcon,
   videoIcon,
 
@@ -71,3 +75,15 @@ export const images = {
    */
   tutorPortrait: { uri: "https://picsum.photos/seed/lingua-tutor/240" },
 };
+
+/**
+ * Artwork for a lesson.
+ *
+ * No per-lesson illustrations exist in assets/ yet, so this falls back to a
+ * deterministic placeholder keyed by the lesson id — the same lesson always
+ * gets the same picture. Set `image` on a lesson in `data/lessons.ts` to
+ * override it with a real asset once the artwork lands.
+ */
+export function lessonImage(lesson: { id: string; image?: number }) {
+  return lesson.image ?? { uri: `https://picsum.photos/seed/${lesson.id}/640/480` };
+}

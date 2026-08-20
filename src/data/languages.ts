@@ -49,7 +49,7 @@ export const languages: Language[] = [
     greeting: "안녕",
     learnerCount: 9_300_000,
     isPopular: true,
-    isAvailable: false,
+    isAvailable: true,
     speechLocale: "ko-KR",
   },
   {
@@ -60,7 +60,7 @@ export const languages: Language[] = [
     greeting: "Hallo",
     learnerCount: 8_100_000,
     isPopular: true,
-    isAvailable: false,
+    isAvailable: true,
     speechLocale: "de-DE",
   },
   {
@@ -71,7 +71,7 @@ export const languages: Language[] = [
     greeting: "你好",
     learnerCount: 7_400_000,
     isPopular: true,
-    isAvailable: false,
+    isAvailable: true,
     speechLocale: "zh-CN",
   },
 ];
