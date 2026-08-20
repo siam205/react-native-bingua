@@ -16,6 +16,9 @@ export const colors = {
   error: "#FF4D4F",
   info: "#4D8BFF",
 
+  // Tinted surfaces
+  purpleTint: "#F6F4FF",
+
   // Neutrals
   ink: "#0D132B",
   inkMuted: "#6B7280",

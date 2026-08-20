@@ -26,6 +26,9 @@
   --color-surface: #f6f7fb;
   --color-background: #ffffff;
 
+  /* Tinted surfaces */
+  --color-purple-tint: #f6f4ff;
+
   /* Speech bubble tints — onboarding */
   --color-bubble-blue: #eaf2fd;
   --color-bubble-purple: #f3f1fe;
