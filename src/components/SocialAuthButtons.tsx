@@ -3,20 +3,22 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Image } from "@/components/Image";
 import { images } from "@/constants/images";
 
+// The key is the Clerk OAuth strategy, so it can be passed straight to startSSOFlow().
 const PROVIDERS = [
-  { key: "google", label: "Continue with Google", icon: images.googleIcon },
-  { key: "facebook", label: "Continue with Facebook", icon: images.facebookIcon },
-  { key: "apple", label: "Continue with Apple", icon: images.appleIcon },
+  { key: "oauth_google", label: "Continue with Google", icon: images.googleIcon },
+  { key: "oauth_facebook", label: "Continue with Facebook", icon: images.facebookIcon },
+  { key: "oauth_apple", label: "Continue with Apple", icon: images.appleIcon },
 ] as const;
 
-export type SocialProvider = (typeof PROVIDERS)[number]["key"];
+export type SocialStrategy = (typeof PROVIDERS)[number]["key"];
 
 type SocialAuthButtonsProps = {
-  onPress: (provider: SocialProvider) => void;
+  onPress: (strategy: SocialStrategy) => void;
+  disabled?: boolean;
 };
 
 /** "or continue with" divider plus the three social provider buttons. */
-export function SocialAuthButtons({ onPress }: SocialAuthButtonsProps) {
+export function SocialAuthButtons({ onPress, disabled = false }: SocialAuthButtonsProps) {
   return (
     <View>
       <View className="mt-9 flex-row items-center gap-4">
@@ -33,6 +35,7 @@ export function SocialAuthButtons({ onPress }: SocialAuthButtonsProps) {
             key={provider.key}
             accessibilityRole="button"
             activeOpacity={0.7}
+            disabled={disabled}
             onPress={() => onPress(provider.key)}
             className="h-[52px] flex-row items-center rounded-2xl border border-border bg-white pl-9"
             style={styles.card}
