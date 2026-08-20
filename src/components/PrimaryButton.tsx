@@ -32,16 +32,14 @@ export function PrimaryButton({
       <Text className="font-poppins-bold text-[17px] text-white">{label}</Text>
 
       {trailingChevron ? (
-        <View
-          className="absolute right-6 h-[9px] w-[9px] border-r-2 border-t-2 border-white"
-          style={styles.chevron}
-        />
+        <View className="absolute right-6 h-[9px] w-[9px] rotate-45 border-r-2 border-t-2 border-white" />
       ) : null}
     </TouchableOpacity>
   );
 }
 
-// StyleSheet only for the platform shadow and the transform array.
+// StyleSheet only for the platform shadow, which has no Tailwind equivalent
+// that preserves shadowColor and the Android elevation (see AGENTS.md).
 const styles = StyleSheet.create({
   shadow: {
     shadowColor: colors.deepPurple,
@@ -49,8 +47,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.35,
     shadowRadius: 12,
     elevation: 6,
-  },
-  chevron: {
-    transform: [{ rotate: "45deg" }],
   },
 });

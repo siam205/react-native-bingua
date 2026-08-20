@@ -4,7 +4,6 @@ import {
   Modal,
   Platform,
   Pressable,
-  StyleSheet,
   Text,
   TextInput,
   View,
@@ -115,8 +114,8 @@ export function VerificationModal({
       onRequestClose={dismiss}
       onShow={handleShow}
     >
-      <View style={styles.backdrop}>
-        <Pressable style={styles.backdropFill} onPress={dismiss} />
+      <View className="flex-1 justify-end bg-[#0D132B73]">
+        <Pressable className="flex-1" onPress={dismiss} />
 
         <View
           className="rounded-t-[28px] bg-white px-8 pt-4"
@@ -164,7 +163,7 @@ export function VerificationModal({
             caretHidden
             contextMenuHidden
             editable={!isSubmitting}
-            style={styles.hiddenInput}
+            className="absolute h-px w-px opacity-0"
           />
 
           <Text className="text-body-md mt-6 text-center text-ink-muted">
@@ -178,21 +177,3 @@ export function VerificationModal({
     </Modal>
   );
 }
-
-// StyleSheet only for the Modal overlay and the visually hidden input.
-const styles = StyleSheet.create({
-  backdrop: {
-    flex: 1,
-    justifyContent: "flex-end",
-    backgroundColor: "rgba(13, 19, 43, 0.45)",
-  },
-  backdropFill: {
-    flex: 1,
-  },
-  hiddenInput: {
-    position: "absolute",
-    opacity: 0,
-    height: 1,
-    width: 1,
-  },
-});

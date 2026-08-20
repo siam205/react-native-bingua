@@ -28,6 +28,9 @@
 
   /* Tinted surfaces */
   --color-purple-tint: #f6f4ff;
+  --color-peach-tint: #fdf3ec;
+  --color-peach-track: #f7e0ca;
+  --color-mint-tint: #f1f7e8;
 
   /* Speech bubble tints — onboarding */
   --color-bubble-blue: #eaf2fd;

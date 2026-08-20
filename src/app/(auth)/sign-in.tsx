@@ -88,11 +88,11 @@ export default function SignIn() {
       <Stack.Screen options={{ headerShown: false }} />
 
       <KeyboardAvoidingView
-        style={styles.flex}
+        className="flex-1"
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
         <ScrollView
-          contentContainerStyle={styles.scrollContent}
+          contentContainerClassName="pb-8"
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
@@ -137,16 +137,11 @@ export default function SignIn() {
   );
 }
 
-// StyleSheet only for SafeAreaView, KeyboardAvoidingView and contentContainerStyle.
+// StyleSheet only for SafeAreaView, which react-native-safe-area-context does
+// not route through className (see AGENTS.md).
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: colors.background,
-  },
-  flex: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingBottom: 32,
   },
 });

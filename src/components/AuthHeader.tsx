@@ -1,9 +1,8 @@
 import { useRouter } from "expo-router";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 import { Image } from "@/components/Image";
 import { images } from "@/constants/images";
-import { colors } from "@/theme";
 
 type AuthHeaderProps = {
   title: string;
@@ -33,10 +32,7 @@ export function AuthHeader({ title, subtitle }: AuthHeaderProps) {
           className="-ml-2 h-10 w-10 items-center justify-center"
           onPress={() => router.back()}
         >
-          <View
-            className="h-3 w-3 border-b-2 border-l-2 border-ink"
-            style={styles.chevronLeft}
-          />
+          <View className="h-3 w-3 rotate-45 border-b-2 border-l-2 border-ink" />
         </TouchableOpacity>
 
         <Text className="mt-[30px] font-poppins-bold text-[25px] leading-8 text-ink">
@@ -50,9 +46,8 @@ export function AuthHeader({ title, subtitle }: AuthHeaderProps) {
       <View className="relative mb-[-44px] mt-[-18px] h-[199px] w-[230px] self-center">
         <Image
           source={images.mascotAuth}
-          className="absolute left-[5px] top-0 h-[199px] w-[199px]"
+          className="absolute left-[5px] top-0 h-[199px] w-[199px] [transform:scaleX(-1)]"
           contentFit="contain"
-          style={styles.mascotFlip}
         />
         <Image
           source={images.sparkleOrange}
@@ -73,14 +68,3 @@ export function AuthHeader({ title, subtitle }: AuthHeaderProps) {
     </View>
   );
 }
-
-// StyleSheet only for the transform arrays (see AGENTS.md style exceptions).
-const styles = StyleSheet.create({
-  chevronLeft: {
-    transform: [{ rotate: "45deg" }],
-    borderColor: colors.ink,
-  },
-  mascotFlip: {
-    transform: [{ scaleX: -1 }],
-  },
-});
