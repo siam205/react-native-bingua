@@ -16,8 +16,14 @@ type VerificationModalProps = {
   visible: boolean;
   email: string;
   onClose: () => void;
-  /** Fires once the 6th digit is typed. */
-  onComplete: () => void;
+  /**
+   * Called with the full code once the 6th digit is typed. Resolve `true` when
+   * the code was accepted; resolve `false` to clear the boxes and let the user
+   * try again (the caller is responsible for showing the error).
+   */
+  onSubmitCode: (code: string) => Promise<boolean>;
+  /** Called when the user taps "Resend". */
+  onResend: () => Promise<void>;
 };
 
 /**
@@ -38,9 +44,11 @@ export function VerificationModal({
   visible,
   email,
   onClose,
-  onComplete,
+  onSubmitCode,
+  onResend,
 }: VerificationModalProps) {
   const [code, setCode] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const inputRef = useRef<TextInput>(null);
 
@@ -61,18 +69,36 @@ export function VerificationModal({
 
   const handleShow = () => {
     setCode("");
+    setIsSubmitting(false);
     // Wait for the sheet slide-in before opening the keyboard.
     setTimeout(() => inputRef.current?.focus(), 350);
   };
 
-  const handleChangeText = (value: string) => {
+  const handleChangeText = async (value: string) => {
+    if (isSubmitting) return;
+
     const digits = value.replace(/[^0-9]/g, "").slice(0, CODE_LENGTH);
     setCode(digits);
 
-    if (digits.length === CODE_LENGTH) {
-      Keyboard.dismiss();
-      onComplete();
+    if (digits.length < CODE_LENGTH) return;
+
+    Keyboard.dismiss();
+    setIsSubmitting(true);
+    const accepted = await onSubmitCode(digits);
+    setIsSubmitting(false);
+
+    // Wrong code: clear the boxes and hand focus back for another attempt.
+    if (!accepted) {
+      setCode("");
+      inputRef.current?.focus();
     }
+  };
+
+  const handleResend = async () => {
+    if (isSubmitting) return;
+    setCode("");
+    await onResend();
+    inputRef.current?.focus();
   };
 
   const dismiss = () => {
@@ -137,12 +163,15 @@ export function VerificationModal({
             maxLength={CODE_LENGTH}
             caretHidden
             contextMenuHidden
+            editable={!isSubmitting}
             style={styles.hiddenInput}
           />
 
           <Text className="text-body-md mt-6 text-center text-ink-muted">
             Didn&apos;t get the code?{" "}
-            <Text className="font-poppins-semibold text-purple">Resend</Text>
+            <Text className="font-poppins-semibold text-purple" onPress={handleResend}>
+              Resend
+            </Text>
           </Text>
         </View>
       </View>

@@ -1,5 +1,7 @@
+import { useAuth, useSignIn } from "@clerk/expo";
+import { useSSO } from "@clerk/expo/experimental";
 import { Link, Stack, useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -13,19 +15,72 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { AuthHeader } from "@/components/AuthHeader";
 import { AuthTextField } from "@/components/AuthTextField";
 import { PrimaryButton } from "@/components/PrimaryButton";
-import { SocialAuthButtons } from "@/components/SocialAuthButtons";
+import { SocialAuthButtons, type SocialStrategy } from "@/components/SocialAuthButtons";
 import { VerificationModal } from "@/components/VerificationModal";
+import { showAuthError } from "@/lib/auth-errors";
 import { colors } from "@/theme";
 
 export default function SignIn() {
   const router = useRouter();
+  const { isSignedIn } = useAuth();
+  const { signIn } = useSignIn();
+  const { startSSOFlow } = useSSO();
 
   const [email, setEmail] = useState("");
   const [verifying, setVerifying] = useState(false);
+  const [busy, setBusy] = useState(false);
 
-  const handleVerified = () => {
-    setVerifying(false);
-    router.replace("/");
+  useEffect(() => {
+    // replace() unmounts this screen, which tears down the sheet with it.
+    if (isSignedIn) {
+      router.replace("/");
+    }
+  }, [isSignedIn, router]);
+
+  // This screen has no password field by design, so sign-in uses the
+  // passwordless email code strategy and reuses the same verification sheet.
+  const handleSignIn = async () => {
+    setBusy(true);
+    try {
+      const { error } = await signIn.emailCode.sendCode({ emailAddress: email });
+      if (error) return showAuthError(error);
+
+      setVerifying(true);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleVerifyCode = async (code: string) => {
+    const { error } = await signIn.emailCode.verifyCode({ code });
+    if (error) {
+      showAuthError(error, "Invalid code");
+      return false;
+    }
+
+    const { error: finalizeError } = await signIn.finalize();
+    if (finalizeError) {
+      showAuthError(finalizeError);
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleResend = async () => {
+    const { error } = await signIn.emailCode.sendCode({ emailAddress: email });
+    if (error) showAuthError(error);
+  };
+
+  const handleSocial = async (strategy: SocialStrategy) => {
+    setBusy(true);
+    try {
+      await startSSOFlow({ strategy });
+    } catch (error) {
+      showAuthError(error);
+    } finally {
+      setBusy(false);
+    }
   };
 
   return (
@@ -41,10 +96,7 @@ export default function SignIn() {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <AuthHeader
-            title="Welcome back"
-            subtitle="Log in to continue learning ✨"
-          />
+          <AuthHeader title="Welcome back" subtitle="Log in to continue learning ✨" />
 
           <View className="px-8">
             <AuthTextField
@@ -58,10 +110,11 @@ export default function SignIn() {
             <PrimaryButton
               label="Sign In"
               className="mt-5"
-              onPress={() => setVerifying(true)}
+              disabled={busy}
+              onPress={handleSignIn}
             />
 
-            <SocialAuthButtons onPress={() => setVerifying(true)} />
+            <SocialAuthButtons onPress={handleSocial} disabled={busy} />
 
             <Text className="font-poppins-regular mt-12 text-center text-[15px] text-ink-muted">
               Don&apos;t have an account?{" "}
@@ -77,7 +130,8 @@ export default function SignIn() {
         visible={verifying}
         email={email}
         onClose={() => setVerifying(false)}
-        onComplete={handleVerified}
+        onSubmitCode={handleVerifyCode}
+        onResend={handleResend}
       />
     </SafeAreaView>
   );

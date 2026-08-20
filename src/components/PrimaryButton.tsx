@@ -7,6 +7,8 @@ type PrimaryButtonProps = {
   onPress: () => void;
   /** Shows the trailing ">" chevron used on the onboarding CTA. */
   trailingChevron?: boolean;
+  /** Blocks repeat taps while an auth request is in flight. */
+  disabled?: boolean;
   className?: string;
 };
 
@@ -15,12 +17,14 @@ export function PrimaryButton({
   label,
   onPress,
   trailingChevron = false,
+  disabled = false,
   className = "",
 }: PrimaryButtonProps) {
   return (
     <TouchableOpacity
       accessibilityRole="button"
       activeOpacity={0.85}
+      disabled={disabled}
       onPress={onPress}
       className={`relative h-[56px] flex-row items-center justify-center rounded-full bg-deep-purple ${className}`}
       style={styles.shadow}
