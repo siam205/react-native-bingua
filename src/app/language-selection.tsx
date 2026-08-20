@@ -16,6 +16,7 @@ import { LanguageCard } from "@/components/LanguageCard";
 import { PrimaryButton } from "@/components/PrimaryButton";
 import { images } from "@/constants/images";
 import { DEFAULT_LANGUAGE_ID, languages } from "@/data/languages";
+import { useLanguageStore } from "@/store/language-store";
 import { colors, fontFamily } from "@/theme";
 import type { LanguageCode } from "@/types/learning";
 
@@ -36,8 +37,14 @@ const EARTH_ARTWORK_TOP = 0.1707;
 export default function LanguageSelection() {
   const router = useRouter();
   const { width } = useWindowDimensions();
+  const savedLanguageId = useLanguageStore((state) => state.selectedLanguageId);
+  const setLanguage = useLanguageStore((state) => state.setLanguage);
+
   const [query, setQuery] = useState("");
-  const [selectedId, setSelectedId] = useState<LanguageCode>(DEFAULT_LANGUAGE_ID);
+  // Re-opening the picker starts on whatever is already saved.
+  const [selectedId, setSelectedId] = useState<LanguageCode>(
+    savedLanguageId ?? DEFAULT_LANGUAGE_ID,
+  );
 
   const term = query.trim().toLowerCase();
   const results = languages.filter(
@@ -46,10 +53,19 @@ export default function LanguageSelection() {
       language.nativeName.toLowerCase().includes(term),
   );
 
+  // Opened from home there is a screen to go back to; opened as the first-run
+  // redirect there is not, so fall back to replacing this screen with home.
+  const leaveScreen = () => {
+    if (router.canGoBack()) {
+      router.back();
+      return;
+    }
+    router.replace("/");
+  };
+
   const handleConfirm = () => {
-    // The choice lives in local state for now; it moves into a Zustand store
-    // once the learning store exists.
-    router.back();
+    setLanguage(selectedId);
+    leaveScreen();
   };
 
   return (
@@ -62,7 +78,7 @@ export default function LanguageSelection() {
           accessibilityLabel="Go back"
           activeOpacity={0.6}
           className="absolute left-3 h-10 w-10 items-center justify-center"
-          onPress={() => router.back()}
+          onPress={leaveScreen}
         >
           <View
             className="h-3 w-3 border-b-2 border-l-2 border-ink"
