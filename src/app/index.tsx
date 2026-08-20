@@ -1,5 +1,5 @@
 import { useAuth, useUser } from "@clerk/expo";
-import { Redirect } from "expo-router";
+import { Link, Redirect } from "expo-router";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 
 import { colors } from "@/theme";
@@ -28,9 +28,22 @@ export default function Index() {
         {user?.primaryEmailAddress?.emailAddress ?? "Signed in"}
       </Text>
 
-      {/* Placeholder home screen. The sign-out button is temporary scaffolding
-          so the auth flow can be re-tested; it goes away with the real home UI. */}
-      <TouchableOpacity className="mt-6" onPress={() => signOut()}>
+      {/* Placeholder home screen. The link and the sign-out button are temporary
+          scaffolding so the flows can be re-tested; they go away with the real
+          home UI. */}
+      <Link href="/language-selection" asChild>
+        <TouchableOpacity
+          accessibilityRole="button"
+          activeOpacity={0.85}
+          className="mt-6 rounded-full bg-deep-purple px-6 py-3"
+        >
+          <Text className="font-poppins-semibold text-[15px] text-white">
+            Choose a language
+          </Text>
+        </TouchableOpacity>
+      </Link>
+
+      <TouchableOpacity className="mt-2" onPress={() => signOut()}>
         <Text className="font-poppins-semibold text-[15px] text-purple">Sign out</Text>
       </TouchableOpacity>
     </View>
