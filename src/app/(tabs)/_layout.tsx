@@ -4,6 +4,7 @@ import { Tabs } from "expo-router/js-tabs";
 import { ActivityIndicator, View } from "react-native";
 
 import { TabBar } from "@/components/TabBar";
+import { useSelectedLanguageId } from "@/hooks/use-selected-language";
 import { useLanguageStore } from "@/store/language-store";
 import { colors } from "@/theme";
 
@@ -15,7 +16,7 @@ import { colors } from "@/theme";
 export default function TabsLayout() {
   const { isLoaded, isSignedIn } = useAuth();
   const hasHydrated = useLanguageStore((state) => state.hasHydrated);
-  const selectedLanguageId = useLanguageStore((state) => state.selectedLanguageId);
+  const selectedLanguageId = useSelectedLanguageId();
 
   // Wait for Clerk to restore any cached session, and for the saved language to
   // come back from AsyncStorage, before deciding where to go.

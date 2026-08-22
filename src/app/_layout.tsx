@@ -82,6 +82,10 @@ export default function RootLayout() {
     return null;
   }
 
+  // Every screen draws its own header, so the native stack header stays off.
+  // Without this the (tabs) group renders a bar titled "(tabs)".
+  const stack = <Stack screenOptions={{ headerShown: false }} />;
+
   // tokenCache keeps the Clerk session in encrypted storage so it survives restarts.
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
@@ -90,11 +94,11 @@ export default function RootLayout() {
           <PostHogProvider client={posthog}>
             <PostHogErrorBoundary>
               <PostHogIdentity />
-              <Stack />
+              {stack}
             </PostHogErrorBoundary>
           </PostHogProvider>
         ) : (
-          <Stack />
+          stack
         )}
       </SafeAreaProvider>
     </ClerkProvider>

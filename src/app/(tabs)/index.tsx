@@ -1,4 +1,4 @@
-import { useUser } from "@clerk/expo";
+import { useAuth, useUser } from "@clerk/expo";
 import { useRouter } from "expo-router";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -6,10 +6,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "@/components/Image";
 import { PlanRow } from "@/components/PlanRow";
 import { images } from "@/constants/images";
-import { getLanguage } from "@/data/languages";
 import { getLessonsForUnit, getVocabularyForUnit } from "@/data/lessons";
 import { getUnitsForLanguage } from "@/data/units";
-import { useLanguageStore } from "@/store/language-store";
+import { useSelectedLanguage } from "@/hooks/use-selected-language";
 import { colors } from "@/theme";
 
 /**
@@ -29,9 +28,8 @@ const STREAK_DAYS = 12;
 export default function Home() {
   const router = useRouter();
   const { user } = useUser();
-  const selectedLanguageId = useLanguageStore((state) => state.selectedLanguageId);
-
-  const language = selectedLanguageId ? getLanguage(selectedLanguageId) : undefined;
+  const { signOut } = useAuth();
+  const language = useSelectedLanguage();
 
   // First name if Clerk has one, otherwise the part of the email before the @.
   const firstName =
@@ -242,6 +240,17 @@ export default function Home() {
             <Image source={images.videoIcon} className="h-[20px] w-[20px]" contentFit="contain" />
           </TouchableOpacity>
         </View>
+
+        {/* Signing out drops back to onboarding via the guard in (tabs)/_layout. */}
+        <TouchableOpacity
+          accessibilityRole="button"
+          accessibilityLabel="Log out"
+          activeOpacity={0.85}
+          className="mx-5 mt-6 h-[46px] items-center justify-center rounded-full border border-border bg-white"
+          onPress={() => signOut()}
+        >
+          <Text className="font-poppins-semibold text-[15px] text-error">Log out</Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );

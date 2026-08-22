@@ -6,10 +6,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "@/components/Image";
 import { LessonCard, type LessonCardStatus } from "@/components/LessonCard";
 import { images, lessonImage } from "@/constants/images";
-import { getLanguage } from "@/data/languages";
 import { getLessonsForUnit, getVocabularyForUnit } from "@/data/lessons";
 import { getUnitsForLanguage } from "@/data/units";
-import { useLanguageStore } from "@/store/language-store";
+import { useSelectedLanguage } from "@/hooks/use-selected-language";
 import { colors } from "@/theme";
 
 /**
@@ -30,8 +29,7 @@ type Segment = "lessons" | "practice";
  */
 export default function Learn() {
   const router = useRouter();
-  const selectedLanguageId = useLanguageStore((state) => state.selectedLanguageId);
-  const language = selectedLanguageId ? getLanguage(selectedLanguageId) : undefined;
+  const language = useSelectedLanguage();
 
   const unit = language ? getUnitsForLanguage(language.id)[0] : undefined;
   const lessons = unit ? getLessonsForUnit(unit.id) : [];
