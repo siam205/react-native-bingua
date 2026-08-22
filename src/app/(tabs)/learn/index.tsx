@@ -158,7 +158,12 @@ export default function Learn() {
                 key={lesson.id}
                 lesson={lesson}
                 status={statusFor(index)}
-                onPress={() => setCurrentIndex(index)}
+                onPress={() => {
+                  // Selecting also moves the progress marker, so returning
+                  // from the session shows this lesson as the current one.
+                  setCurrentIndex(index);
+                  router.push(`/learn/${lesson.id}`);
+                }}
               />
             ))}
           </View>
