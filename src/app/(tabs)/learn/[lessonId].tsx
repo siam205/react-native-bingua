@@ -16,7 +16,7 @@ import { images } from "@/constants/images";
 import { getLanguage } from "@/data/languages";
 import { getLesson } from "@/data/lessons";
 import { getUnit } from "@/data/units";
-import { useLanguageStore } from "@/store/language-store";
+import { useSelectedLanguageId } from "@/hooks/use-selected-language";
 import { colors } from "@/theme";
 
 /** How long the mock session spends "Connecting…" before it goes live. */
@@ -44,7 +44,7 @@ export default function AudioLesson() {
   const { user } = useUser();
   const { height } = useWindowDimensions();
   const { lessonId } = useLocalSearchParams<{ lessonId: string }>();
-  const selectedLanguageId = useLanguageStore((state) => state.selectedLanguageId);
+  const selectedLanguageId = useSelectedLanguageId();
 
   const lesson = lessonId ? getLesson(lessonId) : undefined;
   const unit = lesson ? getUnit(lesson.unitId) : undefined;

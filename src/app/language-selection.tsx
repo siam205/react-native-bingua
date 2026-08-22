@@ -1,3 +1,4 @@
+import { useUser } from "@clerk/expo";
 import { Stack, useRouter } from "expo-router";
 import { useState } from "react";
 import {
@@ -16,6 +17,7 @@ import { LanguageCard } from "@/components/LanguageCard";
 import { PrimaryButton } from "@/components/PrimaryButton";
 import { images } from "@/constants/images";
 import { DEFAULT_LANGUAGE_ID, languages } from "@/data/languages";
+import { useSelectedLanguageId } from "@/hooks/use-selected-language";
 import { useLanguageStore } from "@/store/language-store";
 import { colors } from "@/theme";
 import type { LanguageCode } from "@/types/learning";
@@ -37,7 +39,8 @@ const EARTH_ARTWORK_TOP = 0.1707;
 export default function LanguageSelection() {
   const router = useRouter();
   const { width } = useWindowDimensions();
-  const savedLanguageId = useLanguageStore((state) => state.selectedLanguageId);
+  const { user } = useUser();
+  const savedLanguageId = useSelectedLanguageId();
   const setLanguage = useLanguageStore((state) => state.setLanguage);
 
   const [query, setQuery] = useState("");
@@ -64,7 +67,11 @@ export default function LanguageSelection() {
   };
 
   const handleConfirm = () => {
-    setLanguage(selectedId);
+    // The guard in (tabs)/_layout only lets signed-in users reach this screen,
+    // so `user` is present by the time Continue can be tapped.
+    if (user) {
+      setLanguage(user.id, selectedId);
+    }
     leaveScreen();
   };
 
