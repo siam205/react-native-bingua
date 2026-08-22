@@ -53,6 +53,41 @@ export const units: Unit[] = [
     icon: "🌸",
     accent: "green",
   },
+  /* ---------------------------------- Korean --------------------------------- */
+  {
+    id: "ko-a1-u1",
+    languageId: "ko",
+    level: "A1",
+    order: 1,
+    title: "안녕하세요",
+    description: "Polite greetings, numbers and your first Korean orders.",
+    icon: "🇰🇷",
+    accent: "purple",
+  },
+
+  /* ---------------------------------- German --------------------------------- */
+  {
+    id: "de-a1-u1",
+    languageId: "de",
+    level: "A1",
+    order: 1,
+    title: "Hallo!",
+    description: "Greet people, order breakfast and find your way around.",
+    icon: "🥨",
+    accent: "streak",
+  },
+
+  /* ---------------------------------- Chinese -------------------------------- */
+  {
+    id: "zh-a1-u1",
+    languageId: "zh",
+    level: "A1",
+    order: 1,
+    title: "你好",
+    description: "Greetings, numbers and everyday Mandarin essentials.",
+    icon: "🏮",
+    accent: "blue",
+  },
 ];
 
 export function getUnit(unitId: string): Unit | undefined {

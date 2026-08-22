@@ -206,6 +206,11 @@ export interface Lesson {
   description: string;
   kind: LessonKind;
   icon: string;
+  /**
+   * Optional local artwork (a `require`d asset from `constants/images.ts`).
+   * When absent the UI falls back to a placeholder — see `lessonImage()`.
+   */
+  image?: number;
   xpReward: number;
   estimatedMinutes: number;
   goals: LessonGoal[];
