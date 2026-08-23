@@ -1,0 +1,15 @@
+[project]
+name = "bingua-vision-agent"
+version = "0.1.0"
+description = "Voice-only AI language teacher for the Bingua app, built on Vision Agents"
+requires-python = ">=3.10"
+
+dependencies = [
+    "vision-agents==0.6.9",
+    "vision-agents-plugins-gemini==0.6.9",
+    "vision-agents-plugins-getstream==0.6.9",
+    "python-dotenv>=1.0",
+]
+
+[tool.setuptools]
+py-modules = ["agent"]
