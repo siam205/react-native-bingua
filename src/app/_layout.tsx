@@ -7,6 +7,7 @@ import { PostHogErrorBoundary, PostHogProvider } from "posthog-react-native";
 import { useEffect, useRef } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
+import { StreamVideoProvider } from "@/components/StreamVideoProvider";
 import { posthog } from "@/lib/posthog";
 import { fontAssets } from "@/theme";
 
@@ -84,7 +85,13 @@ export default function RootLayout() {
 
   // Every screen draws its own header, so the native stack header stays off.
   // Without this the (tabs) group renders a bar titled "(tabs)".
-  const stack = <Stack screenOptions={{ headerShown: false }} />;
+  // StreamVideoProvider sits above the router so the call connection survives
+  // navigation; it renders children untouched until a user is signed in.
+  const stack = (
+    <StreamVideoProvider>
+      <Stack screenOptions={{ headerShown: false }} />
+    </StreamVideoProvider>
+  );
 
   // tokenCache keeps the Clerk session in encrypted storage so it survives restarts.
   return (

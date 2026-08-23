@@ -42,3 +42,8 @@ example
 # generated native folders
 /ios
 /android
+
+# Python service (vision-agent) virtualenv
+vision-agent/.venv/
+vision-agent/__pycache__/
+vision-agent/*.egg-info/
